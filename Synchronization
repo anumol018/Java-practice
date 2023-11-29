@@ -1,0 +1,51 @@
+package Javaproject;
+import java.util.Scanner;
+public class synchronizationDemo {
+	public static void main (String [] args) {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter the first number to print the multiplication table");
+		int number1=sc.nextInt();
+		System.out.println("Enter the second number to print the multiplication table");
+		int number2=sc.nextInt();
+		multiplicationTable m=new multiplicationTable();
+		MyThread1 t=new MyThread1(number1,m);
+		MyThread2 t1=new MyThread2(number2,m);
+		t.setPriority(6);
+		t1.setPriority(2);
+		t.start();
+		t1.start();
+		
+	}
+}
+class MyThread1 extends Thread{
+	multiplicationTable t;
+	int num;
+	MyThread1(int num, multiplicationTable t){
+		this.num=num;
+		this.t=t;
+	}
+	public void run() {
+		System.out.println("Thread Priority:"+Thread.currentThread().getPriority());
+		t.printMultiplicationTable(num);
+	}
+}
+class MyThread2 extends Thread{
+	multiplicationTable t;
+	int num;
+	MyThread2(int num,multiplicationTable t){
+		this.num=num;
+		this.t=t;
+	}
+	public void run() {
+		System.out.println("Thread Priority:"+Thread.currentThread().getPriority());
+		t.printMultiplicationTable(num);
+	}
+}
+class multiplicationTable{
+	synchronized void printMultiplicationTable(int number) {
+		for(int i=1;i<=10;i++) {
+			System.out.println(i+"x"+number+"="+i*number);
+		}
+		System.out.println(" ");
+	}
+}
